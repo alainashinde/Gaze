@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <title>Gaze Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .status { display:flex; align-items:center; gap:10px; }
+    .dot { width:18px; height:18px; border-radius:50%; background:#999; }
+    .dot.focused { background: #00c853; }
+    .dot.unfocused { background: #d50000; }
+  </style>
+</head>
+<body>
+  <h2>Gaze Dashboard</h2>
+  <div class="status">
+    <div id="dot" class="dot"></div>
+    <div id="text">Loading status...</div>
+  </div>
+  <p>Last updated: <span id="updated">--</span></p>
+  <p><a href="/events.csv">Download event log (CSV)</a></p>
+  <script>
+    async function fetchStatus(){
+      try {
+        const r = await fetch('/status');
+        const j = await r.json();
+        const dot = document.getElementById('dot');
+        const text = document.getElementById('text');
+        const updated = document.getElementById('updated');
+        if (j.focused){
+          dot.classList.add('focused'); dot.classList.remove('unfocused');
+          text.textContent = 'Focused';
+        } else {
+          dot.classList.add('unfocused'); dot.classList.remove('focused');
+          text.textContent = 'Distracted';
+        }
+        updated.textContent = j.last_updated || '--';
+      } catch (e){
+        console.log('Error', e);
+      }
+    }
+    setInterval(fetchStatus, 1000);
+    fetchStatus();
+  </script>
+</body>
+</html>

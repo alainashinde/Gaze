@@ -1,0 +1,17 @@
+<!doctype html>
+<html><head><meta charset='utf-8'><title>Gaze Options</title></head><body>
+<h3>Gaze Options</h3>
+<label>Focus domains (comma-separated):</label><br/>
+<input id='domains' style='width:400px' placeholder='e.g., docs.google.com, canvas.instructure.com' /><br/><br/>
+<button id='save'>Save</button>
+<script>
+  document.getElementById('save').addEventListener('click', ()=>{
+    const val = document.getElementById('domains').value;
+    const arr = val.split(',').map(s=>s.trim()).filter(Boolean);
+    chrome.storage.local.set({focusDomains: arr}, ()=> alert('Saved'));
+  });
+  chrome.storage.local.get(['focusDomains'], (res)=> {
+    if (res.focusDomains) document.getElementById('domains').value = res.focusDomains.join(', ');
+  });
+</script>
+</body></html>
