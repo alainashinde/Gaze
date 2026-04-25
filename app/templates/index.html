@@ -1,0 +1,800 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Your Gaze Dashboard</title>
+    <link rel="icon" href="/static/logo.png" type="image/png">
+    <link rel="shortcut icon" href="/static/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="/static/logo.png">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f5f8fc;
+      --card:#ffffff;
+      --accent:#4a90e2;
+      --accent-2:#7db9ff;
+      --muted:#7b8590;
+      --round:14px;
+      --shadow: 0 6px 18px rgba(30,40,60,0.06);
+      font-family: 'Manrope', system-ui, sans-serif;
+    }
+    html,body{height:100%;margin:0;background:var(--bg);color:#0b1220;}
+    .wrap{max-width:1040px;margin:28px auto;padding:18px;}
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+    .brand{display:flex;align-items:center;gap:14px}
+    .logo{
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(6px);
+
+      box-shadow:
+        0 8px 20px rgba(74,144,226,0.22),
+        inset 0 1px 0 rgba(255,255,255,0.7);
+    }
+      .logo:hover{
+        transform: scale(1.05);
+        transition: 0.2s ease;
+      }
+
+    .logo-img{
+      width:85%;
+      height:85%;
+      object-fit:contain;
+    }
+    h1{margin:0;font-size:20px}
+    .subtitle{color:var(--muted);font-size:13px}
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
+    .faq-item {
+      transition: all 0.2s ease;
+    }
+
+    .faq-item:hover {
+      transform: translateX(2px);
+      border-color: #dbe7ff;
+    }
+      .insight-card {
+        padding: 14px 14px;
+        border-radius: 14px;
+        background: linear-gradient(180deg, #f8fbff, #ffffff);
+        border: 1px solid #e6eef8;
+        font-size: 15px;
+        line-height: 1.5;
+        color: #1a2433;
+        font-weight: 500;
+
+        box-shadow: 0 8px 18px rgba(30, 40, 60, 0.06);
+
+        opacity: 0;
+        transform: translateY(6px);
+        animation: insightFade 0.6s ease forwards;
+      }
+
+      @keyframes insightFade {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .insight-highlight {
+        font-weight: 700;
+        color: var(--accent);
+      }
+    .card{background:var(--card);border-radius:var(--round);padding:16px;box-shadow:var(--shadow);transition: transform 0.15s ease;}
+    .card:hover{transform: translateY(-2px);}
+    .row{display:flex;gap:12px;align-items:center}
+    .stat{flex:1;padding:14px;border-radius:12px;background:linear-gradient(180deg,#fbfdff,#f7fbff);box-shadow:inset 0 -1px 0 rgba(0,0,0,0.02)}
+    .stat h3{margin:0;font-size:14px;color:var(--muted)}
+    .stat .num{font-weight:700;font-size:20px;margin-top:6px;color:#14212d}
+    .timeline{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+    .event{display:flex;gap:12px;align-items:center;padding:10px;border-radius:10px;background:#fbfdff;border:1px solid #eef6ff}
+    .time{width:120px;color:var(--muted);font-size:13px}
+    .etype{font-weight:600}
+    .einfo{color:var(--muted);font-size:13px;margin-left:auto}
+    .small{font-size:13px;color:var(--muted)}
+    .btn{
+      background:#5b8def;
+      color:white;
+      padding:10px 14px;
+      border-radius:12px;
+      border:none;
+      cursor:pointer;
+      font-weight:600;
+      transition:all 0.2s ease;
+      box-shadow:0 4px 12px rgba(91,141,239,0.18);
+    }
+
+    .btn:hover{
+      background:#4a7fe6;
+      transform:translateY(-1px);
+    }
+
+    .btn-secondary{
+      background:#eef4ff;
+      color:#3d5a80;
+      box-shadow:none;
+    }
+
+    .btn-soft{
+      background:#dbe7f7;
+      color:#4b6584;
+      box-shadow:none;
+    }
+      .event-summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+
+        font-weight: 600;
+        color: #5b8def;
+        padding: 10px 12px;
+        border-radius: 10px;
+
+        background: #f5f9ff;
+        border: 1px solid #e6eef8;
+
+        list-style: none;
+      }
+
+      .event-summary::-webkit-details-marker {
+        display: none;
+      }
+      .event-summary::marker {
+        display: none;
+      }
+
+      /* chevron icon */
+      .chevron {
+        width: 18px;
+        height: 18px;
+        stroke: #5b8def;
+        stroke-width: 2.5;
+        fill: none;
+        transition: transform 0.25s ease;
+      }
+
+      /* points UP when open, DOWN when closed */
+      details[open] .chevron {
+        transform: rotate(180deg);
+      }
+
+      select {
+        width: 300px;
+        padding: 10px 12px;
+        margin-top: 6px;
+        border-radius: 12px;
+        border: 1px solid #e6eef8;
+        background: #fbfdff;
+        color: #0b1220;
+        font-family: 'Manrope', system-ui, sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        outline: none;
+        box-shadow: inset 0 1px 0 rgba(0,0,0,0.02);
+        transition: all 0.2s ease;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+
+
+        background-image: linear-gradient(45deg, transparent 50%, #7b8590 50%),
+                          linear-gradient(135deg, #7b8590 50%, transparent 50%);
+        background-position: calc(100% - 18px) calc(50% - 3px),
+                             calc(100% - 12px) calc(50% - 3px);
+        background-size: 6px 6px, 6px 6px;
+        background-repeat: no-repeat;
+        padding-right: 34px;
+      }
+
+      select:hover {
+        border-color: #cfe0ff;
+        background: #f8fbff;
+      }
+
+      select:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(74,144,226,0.15);
+      }
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#f3f7fb;color:var(--muted);font-size:13px;border:1px solid #eaf3ff}
+    .controls{display:flex;gap:8px;align-items:center;margin-top:10px}
+    .right-col .card{top:18px}
+    input[type="text"]{width:100%;padding:10px;border-radius:10px;border:1px solid #e6eef8;background:#fbfdff}
+    .download{display:flex;gap:8px;align-items:center;margin-top:12px}
+    footer{text-align:center;color:var(--muted);font-size:13px;margin-top:18px}
+
+    .event {
+      max-width: 100%;
+    }
+
+    .einfo {
+      max-width: 100%;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      white-space: normal;
+    }
+      .event {
+        flex-wrap: wrap;
+      }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo"><img src="/static/logo.png" alt="Gaze Logo" class="logo-img"></div>
+        <div>
+          <h1>Gaze</h1>
+          <div class="subtitle">Your Eyes. Your Focus.</div>
+        </div>
+      </div>
+      <div id="welcome" class="small">Welcome</div>
+    </header>
+
+    <div class="grid">
+      <main>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <strong style="font-size:16px">Today Summary</strong>
+              <div class="small" style="margin-top:4px">Quick overview of distraction events for today</div>
+            </div>
+            <div class="pill" id="lastUpdated">Updated: --</div>
+          </div>
+
+          <div style="margin-top:14px;display:flex;gap:12px">
+            <div class="stat">
+              <h3>Tab switches</h3>
+              <div class="num" id="cnt_tab">0</div>
+            </div>
+            <div class="stat">
+              <h3>Eyes away</h3>
+              <div class="num" id="cnt_eyes_away">0</div>
+            </div>
+            <div class="stat">
+              <h3>Face not detected</h3>
+              <div class="num" id="cnt_face">0</div>
+            </div>
+          </div>
+
+          <div style="margin-top:16px;display:flex;justify-content:space-between;align-items:center">
+            <div class="small">You were distracted <strong id="cnt_total">0</strong> times today</div>
+            <div class="controls">
+              <button class="btn" id="downloadCSV">Export CSV</button>
+              <button class="btn btn-secondary" id="openTracker">Open Tracker</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:14px;">
+          <div><strong>Focus Progress</strong></div>
+
+          <div class="small" style="margin-top:6px">
+            Earn points and level up by staying focused. With consistency, you gradually work toward Gaze Eagle rank.
+          </div>
+
+          <div style="display:flex; gap: 40px; margin-top:14px;">
+            
+            <div>
+              <img id="avatarImg" style="width:80px;height:100px;border-radius:12px;display:block;margin-top:8px;" />
+              
+              <div style="margin-top:10px;width:140px;">
+                <div class="small">Progress</div>
+                <div style="width:100%;height:10px;background:#eaf2ff;border-radius:999px;overflow:hidden;margin-top:6px;">
+                  <div id="rewardProgressFill"
+                       style="height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width 0.4s ease;border-radius:999px;"></div>
+                </div>
+
+                <div id="xpLabel" class="small" style="margin-top:6px;">
+                  0/1000 points
+                </div>
+              </div>
+            </div>
+          
+          <div style="margin-top:35px">
+            <div class="small">Points</div>
+            <div id="points" style="font-size:20px;font-weight:700">0</div>
+          </div>
+
+          <div style="margin-top:35px">
+            <div class="small">Level</div>
+            <div id="level" style="font-size:16px;font-weight:600">1</div>
+          </div>
+
+          <div style="margin-top:35px">
+            <div class="small">Rank</div>
+            <div id="rank" style="font-weight:600">Egg</div>
+          </div>
+
+          <div style="margin-top:35px">
+            <div class="small">Mode</div>
+            <div id="mode" style="font-weight:600">--</div>
+          </div>
+        </div>
+    </div>
+
+        <div class="card" style="margin-top:14px">
+          <strong>Recent Events</strong>
+
+          <div class="small" style="margin-top:6px">
+            A timeline of the most recent events
+          </div>
+
+          <div class="small" style="margin-top:8px;padding:8px 10px;background:#f8fbff;border-radius:10px;border:1px solid #edf4ff;">
+            Review patterns here to understand what interrupts your focus most often.
+          </div>
+
+          <details style="margin-top:10px;">
+            <summary class="event-summary">
+              <span>Show / Hide Events</span>
+              <svg class="chevron" viewBox="0 0 24 24">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </summary>
+
+            <div class="timeline" id="timeline"></div>
+          </details>
+        </div>
+        
+        <div class="card" style="margin-top:14px">
+          <strong>Focus Insights</strong>
+
+          <div class="small" style="margin-top:6px">
+            AI-assisted breakdown of your focus patterns
+          </div>
+
+          <div id="insightsBox" style="margin-top:12px;display:flex;flex-direction:column;gap:10px;">
+              <div id="insight_text" class="insight-card">
+                --
+              </div>
+            </div>
+            </br>
+            <div class="stat">
+              <h3>Top Distraction</h3>
+              <div class="num" id="insight_top">--</div>
+            </div>
+
+            <div class="stat">
+              <h3>Most Unstable Time</h3>
+              <div class="num" id="insight_time">--</div>
+            </div>
+
+            <div class="stat">
+              <h3>Avg. Interruptions</h3>
+              <div class="num" id="insight_avg">--</div>
+            </div>
+
+            <div class="stat">
+              <h3>Focus Streak (est.)</h3>
+              <div class="num" id="insight_streak">--</div>
+            </div>
+
+        
+        </div>
+        
+      </main>
+
+      <aside class="right-col">
+        <div class="card">
+          <strong>Live Focus Status</strong>
+          <div class="small" style="margin-top:6px">Realtime webcam + tab monitoring</div>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:12px">
+            <div id="statusDot" style="width:14px;height:14px;border-radius:50%;background:#cbd5db"></div>
+            <div><div id="statusText" style="font-weight:700">Loading...</div><div id="statusDetail" class="small">--</div></div>
+          </div>
+          <div style="margin-top:10px">
+            <div class="small">Current Focus Mode Phase</div>
+            <div id="phaseText" style="font-weight:700;font-size:16px">--</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <strong>Settings</strong>
+          <div class="small" style="margin-top:6px">Your name, focus domains, and focus schedule</div>
+          <div style="margin-top:10px">
+            <label class="small">Your name</label>
+            <input id="username" type="text" placeholder="Optional (saved locally)" style="width: 300px;" />
+            <label class="small" style="margin-top:10px">Focus Domains (comma-separated)</label>
+            <input id="domains" type="text" placeholder="e.g., docs.google.com, canvas.instructure.com" style="width: 300px; margin-bottom: 10px" />
+            <label class="small">Focus Mode</label>
+            <select id="focusMode">
+              <option value="count up">Count Up</option>
+              <option value="pomodoro">Pomodoro (25/5)</option>
+              <option value="50_10">50 / 10</option>
+              <option value="custom">Custom</option>
+            </select>
+            <div id="customInputs" style="display:none; margin-top:10px;">
+              <label class="small">Study time (seconds)</label>
+              <input id="customStudy" type="text" placeholder="e.g. 1500" style="width: 300px; margin-bottom: 10px" />
+
+              <label class="small">Break time (seconds)</label>
+              <input id="customBreak" type="text" placeholder="e.g. 300" style="width: 300px; margin-bottom: 10px" />
+            </div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <button class="btn" id="startTimer">Start Timer</button>
+              <button class="btn btn-soft" id="stopTimer">Stop Timer</button>
+            </div>
+            <div id="timeRemaining">--</div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <button class="btn" id="saveSettings">Save</button>
+              <button class="btn btn-soft" id="clearLogs">Clear Logs</button>
+            </div>
+            <div class="small" style="margin-top:10px;color:var(--muted)">Tip: set the same domains in the browser extension options for live tab classification.</div>
+          </div>
+        </div>
+        
+        <div class="card" style="margin-top:14px;">
+          <strong>Frequently Asked Questions</strong>
+          <div style="margin-top:10px;display:flex;flex-direction:column;gap:10px;">
+            <div class="faq-item" style="padding:10px;border-radius:10px;background:#fbfdff;border:1px solid #eef6ff;">
+              <div style="font-weight:600;font-size:14px;">Where is my data stored?</div>
+              <div class="small">All logs and settings stay on your local machine.</div>
+            </div>
+            <div class="faq-item" style="padding:10px;border-radius:10px;background:#fbfdff;border:1px solid #eef6ff;">
+              <div style="font-weight:600;font-size:14px;">Do I need internet?</div>
+              <div class="small">No — Gaze works locally once installed.</div>
+            </div>
+            <div class="faq-item" style="padding:10px;border-radius:10px;background:#fbfdff;border:1px solid #eef6ff;">
+              <div style="font-weight:600;font-size:14px;">How does focus tracking work?</div>
+              <div class="small">It monitors tab switches and webcam attention signals in real time.</div>
+            </div>
+            <div class="faq-item" style="padding:10px;border-radius:10px;background:#fbfdff;border:1px solid #eef6ff;">
+              <div style="font-weight:600;font-size:14px;">How does the reward system work?</div>
+              <div class="small">Choose your focus method (Pomodoro, Count Up, Custom, etc.). You earn points every time you maintain focus and avoid distractions like tab switches, looking away, or losing face detection over the allotted time period.</br></br>
+                  Higher consistency increases your level and unlocks better ranks (egg, hatchling, fledgling, eagle) over time. </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:14px;text-align:center">
+          <strong>About Gaze</strong>
+          <div class="small" style="margin-top:8px">Local-first focus support for students and professionals. Data stays on your machine.</div>
+        </div>
+      </aside>
+    </div>
+
+    <footer>Gaze • Local-only demo • Data saved to your computer</footer>
+  </div>
+
+  <script>
+
+    const phaseText = document.getElementById("phaseText");
+    const timeRemaining = document.getElementById("timeRemaining");
+
+    // ---------- UTIL ----------
+    function formatDateTime(iso){
+      try{
+        return new Date(iso).toLocaleString();
+      }catch(e){
+        return iso;
+      }
+    }
+
+    function formatDuration(s){
+      const m = Math.floor(s / 60);
+      const r = s % 60;
+      return `${m}:${r.toString().padStart(2,'0')}`;
+    }
+
+
+    function parseCSVLine(line){
+      // split into 3 parts max: ts,event,info
+      const firstComma = line.indexOf(',');
+      const secondComma = line.indexOf(',', firstComma + 1);
+      if(firstComma === -1 || secondComma === -1) return null;
+
+      let ts = line.slice(0, firstComma).replace(/^"|"$/g,'').trim().split('.')[0];
+      let ev = line.slice(firstComma + 1, secondComma).trim();
+      let info = line.slice(secondComma + 1).replace(/^"|"$/g,'').trim();
+
+      return { ts, ev, info };
+    }
+
+    // ---------- USER ----------
+    async function initUser(){
+      const stored = localStorage.getItem('gaze_username') || '';
+      if(stored){
+        username.value = stored;
+        welcome.textContent = 'Welcome back, ' + stored;
+      }
+    }
+
+    // ---------- STATUS ----------
+    
+    function getAvatar(rank){
+      if(rank === "Egg") return "/static/avatars/egg.png";
+      if(rank === "Hatchling") return "/static/avatars/hatchling.png";
+      if(rank === "Fledgling") return "/static/avatars/fledgling.png";
+      if(rank === "Eagle") return "/static/avatars/eagle.png";
+      return "/static/avatars/egg.png";
+    }
+    
+async function fetchStatus(){
+      try{
+        const r = await fetch('/status');
+        const j = await r.json();
+
+        // ---------- POINTS ----------
+        const pts = j.total_points ?? 0;
+
+        // ---------- LEVEL (client-side ) ----------
+        const computedLevel = Math.floor(pts / 1000) + 1;
+        const progress = (pts % 1000) / 1000 * 100;
+
+        document.getElementById("rewardProgressFill").style.width = progress + "%";
+        document.getElementById("xpLabel").textContent = `${pts % 1000}/1000 points`;
+        
+        // ---------- RANK (derive from level so it always updates) ----------
+        function getRank(lv){
+          if(lv >= 10) return "Eagle";
+          if(lv >= 5) return "Fledgling";
+          if(lv >= 2) return "Hatchling";
+          return "Egg";
+        }
+        
+        function getRankLabel(rank){
+          if(rank === "Egg") return "Egg (Beginner)";
+          if(rank === "Hatchling") return "Hatchling (Novice)";
+          if(rank === "Fledgling") return "Fledgling (Intermediate)";
+          if(rank === "Eagle") return "Gaze Eagle (Master)";
+          return rank;
+        }
+
+        const rankName = getRank(computedLevel);
+
+        // ---------- TIMER DISPLAY ----------
+        if (j.timer_state === "IDLE" || !j.timer_running) {
+          timeRemaining.textContent = "--";
+        } else if (j.timer_mode === "count up") {
+          timeRemaining.textContent = formatDuration(j.elapsed ?? 0);
+        } else {
+          timeRemaining.textContent = formatDuration(j.time_remaining ?? 0);
+        }
+
+        // ---------- STATUS UI ----------
+        statusDot.style.background = j.focused ? '#00c853' : '#ff3b30';
+        statusText.textContent = j.focused ? 'Focused' : 'Distracted';
+        statusDetail.textContent = j.detail || '--';
+
+        lastUpdated.textContent =
+          'Updated: ' + (j.last_updated ? new Date(j.last_updated).toLocaleString() : '--');
+
+        // ---------- REWARDS UI ----------
+        points.textContent = pts;
+        level.textContent = computedLevel;
+        rank.textContent = getRankLabel(rankName);
+
+        document.getElementById("rewardProgressFill").style.width = progress + "%";
+        document.getElementById("xpLabel").textContent = `${pts % 1000}/1000 points`;
+        avatarImg.src = getAvatar(rankName);
+
+        mode.textContent = j.timer_mode ?? "count up";
+
+        phaseText.textContent =
+          j.timer_state === "STUDYING" ? "Study" :
+          j.timer_state === "ON_BREAK" ? "Break" :
+          j.timer_state ?? "--";
+
+      }catch(e){
+        console.log('fetchStatus error', e);
+      }
+    }
+
+
+    // ---------- EVENTS ----------
+    async function loadEvents(){
+      const user = username.value.trim() || 'default_user';
+
+      try{
+        const r = await fetch('/events/' + encodeURIComponent(user));
+        if(!r.ok){
+          timeline.innerHTML = '<div class="small">No events yet</div>';
+          cnt_tab.textContent = cnt_eyes_away.textContent =
+          cnt_face.textContent = cnt_total.textContent = '0';
+          return;
+        }
+
+        const text = await r.text();
+        const lines = text.trim().split('\n').slice(1).reverse(); // skip header
+
+        // today at local midnight
+        const today = new Date();
+        today.setHours(0,0,0,0);
+
+        let tabCount = 0;
+        let eyesCount = 0;
+        let faceCount = 0;
+        const rows = [];
+
+        for(const line of lines){
+          const row = parseCSVLine(line);
+          if(!row) continue;
+
+          const tsDate = new Date(row.ts);
+          if (isNaN(tsDate.getTime())) {
+            console.warn("Bad timestamp:", row.ts);
+            continue;
+          }
+
+          rows.push(row);
+
+          if(tsDate >= today){
+            switch(row.ev){
+              case 'tab_switch': tabCount++; break;
+              case 'eyes_away': eyesCount++; break;
+              case 'face_not_detected': faceCount++; break;
+            }
+          }
+        }
+
+        computeInsights(rows);
+
+        // render timeline (most recent first)
+        timeline.innerHTML = '';
+        rows.slice(0,50).forEach(r=>{
+          const el = document.createElement('div');
+          el.className = 'event';
+          el.innerHTML = `
+            <div class="time">${formatDateTime(r.ts)}</div>
+            <div class="etype">${r.ev.replace(/_/g,' ')}</div>
+            <div class="einfo">${r.info || ''}</div>
+          `;
+          timeline.appendChild(el);
+        });
+
+        // update dashboard numbers
+        cnt_tab.textContent = tabCount;
+        cnt_eyes_away.textContent = eyesCount;
+        cnt_face.textContent = faceCount;
+        cnt_total.textContent = tabCount + eyesCount + faceCount;
+
+      }catch(e){
+        console.log('loadEvents error', e);
+        timeline.innerHTML = '<div class="small">Error loading events</div>';
+      }
+    }
+
+      function computeInsights(rows){
+        let tab = 0, eyes = 0, face = 0;
+
+        let hourBuckets = Array(24).fill(0);
+
+        const now = new Date();
+        const today = new Date();
+        today.setHours(0,0,0,0);
+
+        let todayEvents = 0;
+
+        for(const r of rows){
+          const d = new Date(r.ts);
+          if(isNaN(d)) continue;
+
+          const hour = d.getHours();
+          hourBuckets[hour]++;
+
+          if(d >= today){
+            todayEvents++;
+            if(r.ev === 'tab_switch') tab++;
+            if(r.ev === 'eyes_away') eyes++;
+            if(r.ev === 'face_not_detected') face++;
+          }
+        }
+
+        // top distraction
+        let top = "tab switches";
+        let max = tab;
+        if(eyes > max){ max = eyes; top = "eyes away"; }
+        if(face > max){ max = face; top = "face not detected"; }
+
+        // worst hour
+        let worstHour = hourBuckets.indexOf(Math.max(...hourBuckets));
+        let timeLabel =
+          worstHour < 6 ? "Early morning" :
+          worstHour < 12 ? "Morning" :
+          worstHour < 18 ? "Afternoon" :
+          "Evening";
+
+        // avg interruptions
+        let avg = todayEvents > 0 ? (todayEvents / Math.max(1, new Set(rows.map(r => r.ts.split("T")[0])).size)).toFixed(1) : 0;
+
+        // streak
+        let streak = Math.max(1, Math.floor((todayEvents < 5 ? 3 : 1)));
+
+        // update UI
+        document.getElementById("insight_top").textContent = top;
+        document.getElementById("insight_time").textContent = timeLabel;
+        document.getElementById("insight_avg").textContent = avg;
+        document.getElementById("insight_streak").textContent = streak + " hrs";
+
+        const insight =
+          `You tend to lose focus mostly due to ${top}, especially during the ${timeLabel.toLowerCase()}. ` +
+          (todayEvents > 10
+            ? "Today was a high-distraction day — try shorter focus cycles."
+            : "Your focus stability is improving — keep it consistent.");
+
+        document.getElementById("insight_text").innerHTML =
+          insight
+            .replace(top, `<span class="insight-highlight">${top}</span>`)
+            .replace("high-distraction day", `<span class="insight-highlight">high-distraction day</span>`);
+      }
+      
+      
+    // ---------- CONTROLS ----------
+    const modeSelect = document.getElementById("focusMode");
+    const customInputs = document.getElementById("customInputs");
+
+    modeSelect.addEventListener("change", () => {
+      if (modeSelect.value === "custom") {
+        customInputs.style.display = "block";
+      } else {
+        customInputs.style.display = "none";
+      }
+    });
+
+    saveSettings.onclick = ()=>{
+      if(username.value.trim())
+        localStorage.setItem('gaze_username', username.value.trim());
+      alert('Saved locally.');
+    };
+
+    downloadCSV.onclick = ()=>{
+      const user = username.value.trim() || 'default_user';
+      window.location = '/download_all/' + encodeURIComponent(user);
+    };
+
+    clearLogs.onclick = async ()=>{
+      if(!confirm('Clear logs for this user?')) return;
+      const user = username.value.trim() || 'default_user';
+      await fetch('/clear/' + encodeURIComponent(user), {method:'POST'});
+      loadEvents();
+    };
+
+    openTracker.onclick = ()=>{
+      alert('Run eye_tracker.py to stream webcam focus data.');
+    };
+
+    document.getElementById("startTimer").onclick = async () => {
+      const mode = document.getElementById("focusMode").value;
+      let study = parseInt(document.getElementById("customStudy")?.value || "1500");
+      let brk = parseInt(document.getElementById("customBreak")?.value || "300");
+
+      let payload = { mode };
+
+      if (mode === "custom") {
+        const study = parseInt(document.getElementById("customStudy").value || "1500");
+        const brk = parseInt(document.getElementById("customBreak").value || "300");
+
+        payload.study = study;
+        payload.break = brk;
+      }
+
+      await fetch('/start_timer', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload)
+      });
+    };
+
+    document.getElementById("stopTimer").onclick = async () => {
+      await fetch('/stop_timer', { method: 'POST' });
+      fetchStatus(); // refresh
+    };
+
+    // ---------- INIT ----------
+    initUser();
+    fetchStatus();
+    loadEvents();
+    setInterval(()=>{ fetchStatus(); loadEvents(); }, 1000);
+  </script>
+
+</body>
+</html>

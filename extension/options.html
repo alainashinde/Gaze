@@ -1,0 +1,481 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Gaze Options</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <style>
+          :root{
+            --bg:#f5f8fc;
+            --card:#ffffff;
+            --accent:#4a90e2;
+            --muted:#7b8590;
+            --round:14px;
+            --shadow:0 6px 18px rgba(30,40,60,0.06);
+            font-family:'Manrope', system-ui, sans-serif;
+          }
+
+          body{
+            margin:0;
+            padding:16px;
+            background:var(--bg);
+            color:#0b1220;
+            font-family:'Manrope', system-ui, sans-serif;
+          }
+
+          .card{
+            background:var(--card);
+            padding:16px;
+            border:1px solid #eef2f7;
+            border-radius:var(--round);
+            box-shadow:0 4px 14px rgba(30,40,60,0.05);
+            margin-bottom:14px;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+          }
+            .card > *:not(:first-child) {
+              margin-top: 14px;
+            }
+            .card:hover {
+              transform: translateY(-1px);
+              box-shadow: 0 8px 22px rgba(30,40,60,0.08);
+            }
+            
+
+          h3{
+            margin:0;
+            font-size:18px;
+          }
+
+          .muted{
+            font-size:13px;
+            color:var(--muted);
+            margin-top:6px;
+          }
+
+          label.small{
+            font-size:13px;
+            color:var(--muted);
+            display:block;
+            margin-top:10px;
+          }
+
+          input[type="text"]{
+            width:100%;
+            padding:10px 12px;
+            margin-top:6px;
+            border-radius:12px;
+            border:1px solid #e6eef8;
+            background:#fbfdff;
+            font-family:'Manrope', system-ui, sans-serif;
+            font-size:14px;
+            outline:none;
+            box-sizing:border-box;
+          }
+
+          input[type="text"]:focus{
+            border-color:var(--accent);
+            box-shadow:0 0 0 3px rgba(74,144,226,0.15);
+          }
+
+          .row{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            margin-top:10px;
+          }
+
+          .row input[type="checkbox"]{
+            transform:scale(1.1);
+          }
+
+          .sectionTitle{
+            font-weight:700;
+            margin-top:18px;
+              margin-bottom:6px;
+              font-size:12px;
+              letter-spacing:0.08em;
+              text-transform:uppercase;
+              color:#8a94a6;
+          }
+
+          .presets{
+            display:flex;
+            flex-wrap:wrap;
+            gap:8px;
+            margin-top:8px;
+          }
+
+          .chip{
+            padding:8px 10px;
+            border-radius:999px;
+            background:#f3f7fb;
+            border:1px solid #e6eef8;
+            cursor:pointer;
+            font-size:13px;
+            transition:all 0.15s ease;
+          }
+
+          .chip:hover{
+            background:#eaf3ff;
+            border-color:#cfe8ff;
+          }
+
+          .chip.active{
+            background:#e7f2ff;
+            border-color:#cfe8ff;
+            color:#2c6ecb;
+            font-weight:600;
+          }
+
+          .btn{
+            padding:10px 12px;
+            border-radius:12px;
+            border:none;
+            background:#8fcbe9;
+            color:white;
+            cursor:pointer;
+            font-weight:600;
+            font-family:'Manrope', system-ui, sans-serif;
+            transition:all 0.2s ease;
+          }
+
+          .btn:hover{
+            transform:translateY(-1px);
+            background:#3f82df;
+          }
+
+          .btn.secondary{
+            background:#eef4ff;
+            color:#3d5a80;
+          }
+            .chevron {
+              width: 16px;
+              height: 16px;
+              stroke: #7b8590;
+              stroke-width: 2.5;
+              fill: none;
+
+              transition: transform 0.25s ease;
+            }
+            details[open] .chevron {
+              transform: rotate(180deg);
+            }
+            .header{
+              display:flex;
+              align-items:center;
+              gap:12px;
+              margin-bottom:14px;
+              padding-bottom: 12px;
+              border-bottom: 1px solid #eef2f7;
+            }
+
+            .header h3{
+              margin:0;
+              font-size:16px;
+              font-weight:700;
+            }
+
+            .header .muted{
+              font-size:13px;
+              margin-top:2px;
+              color: #7b8590;
+              opacity:0.8;
+            }
+
+          .logo{
+            width:38px;
+            height:38px;
+            border-radius:10px;
+            object-fit:contain;
+            background:white;
+            box-shadow:0 4px 10px rgba(0,0,0,0.06);
+          }
+            
+            .toggle{
+              display:flex;
+              align-items:center;
+              justify-content:space-between;
+              gap:8px;
+              margin-top:5px;
+              cursor:pointer;
+              padding:2px 4px;
+              user-select:none;
+              flex-wrap: nowrap;
+            }
+
+            .toggle input{
+              display:none;
+            }
+            .toggle{
+              
+              border-radius:5px;
+              transition:background 0.15s ease;
+            }
+
+            .toggle:hover{
+              background:#f6f9ff;
+            }
+            .labelText{
+              font-size:13px;
+              font-weight: 500;
+              color:#0b1220;
+              flex:1;
+              padding-right:10px;
+              min-width: 0;
+              white-space: nowrap;
+              overflow: hidden;
+            }
+
+            /* switch track */
+            .slider{
+              width:30px;
+              height:16.7px;
+              background:#e6eef8;
+              border-radius:999px;
+              position:relative;
+              transition:all 0.25s ease;
+              box-shadow: inset 0 1px 2px rgba(0,0,0,0.08);
+            }
+
+            /* knob */
+            .slider::after{
+              content:"";
+              width:13.3px;
+              height:13.3px;
+              background:white;
+              border-radius:50%;
+              position:absolute;
+              top:1.7px;
+              left:1.7px;
+              transition:all 0.25s ease;
+              box-shadow:0 2px 6px rgba(0,0,0,0.15);
+            }
+
+            /* ON state */
+            .toggle input:checked + .slider{
+              background:#8fcbe9;
+            }
+
+            .toggle input:checked + .slider::after{
+              transform:translateX(14px);
+            }
+            .group{
+              display:flex;
+              flex-direction:column;
+              gap:6px;
+            }
+            details{
+              background:transparent;
+              margin-top:12px;
+            }
+
+            summary{
+              list-style:none;
+              cursor:pointer;
+            }
+
+            summary::-webkit-details-marker{
+              display:none;
+            }
+
+            /* section header row */
+            .sectionTitle{
+              display:flex;
+              justify-content:space-between;
+              align-items:center;
+              padding:10px 12px;
+              border-radius:12px;
+              background:#f6f9ff;
+              border:1px solid #e6eef8;
+              font-weight:700;
+              font-size:13px;
+              letter-spacing: 0.06em;
+              color:#1f2a44;
+              transition:all 0.15s ease;
+            }
+
+            /* hover */
+            .sectionTitle:hover{
+              background:#eef5ff;
+            }
+
+            /* open state */
+            details[open] .sectionTitle{
+              border-color:#cfe0ff;
+            }
+
+            /* content animation feel */
+            .group{
+              margin-top:10px;
+              display:flex;
+              flex-direction:column;
+              gap:6px;
+              padding-left:6px;
+            }
+            details {
+              margin-top: 12px;
+              width: 100%;
+              
+            }
+            .section {
+              display: block;
+            }
+
+            details > div {
+              overflow: hidden;
+            }
+
+            /* smooth open/close */
+            details .group,
+            details .presets,
+            details input {
+              transition: all 0.2s ease;
+            }
+            details:not([open]) .group,
+            details:not([open]) .presets,
+            details:not([open]) input{
+              display:none;
+            }
+            details[open] summary.sectionTitle{
+              background:#eaf2ff;
+              border-color:#cfe0ff;
+            }
+            summary.sectionTitle {
+                display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  cursor: pointer;
+                  padding: 10px 12px;
+                  border-radius: 12px;
+                  background: #f6f9ff;
+                  border: 1px solid #e6eef8
+                  user-select: none;
+                  width: 100%;
+                  box-sizing: border-box;
+
+                  white-space: nowrap;
+                  overflow: hidden;
+            }
+            summary.sectionTitle:hover {
+              background: #eef5ff;
+            }
+            summary.sectionTitle:active {
+              transform: scale(0.99);
+            }
+
+            .group{
+              animation: fadeIn 0.2s ease;
+            }
+
+            @keyframes fadeIn{
+              from{ opacity:0; transform: translateY(-4px); }
+              to{ opacity:1; transform: translateY(0); }
+            }
+        </style>
+  </head>
+  <body>
+    <div class="card">
+        <div class="header">
+          <img src="icons/bell.png" class="logo" />
+          <div>
+            <h3>Gaze Options</h3>
+            <div class="muted">Customize focus tracking, notifications, and blocked sites.</div>
+          </div>
+        </div>
+
+      <div style="margin-top:10px">
+        <label class="small">Your name</label>
+        <input id="username" type="text" placeholder="Optional (default_user)" />
+      </div>
+
+      <!-- EXTENSION SETTINGS -->
+      <details class="section">
+          <summary class="sectionTitle">
+            Extension Control
+            <svg class="chevron" viewBox="0 0 24 24">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </summary>
+
+        <div class="group">
+          <label class="toggle">
+            <input type="checkbox" id="gaze_enabled">
+            <span class="slider"></span>
+            <span class="labelText" style="font-weight:700;">Enable Gaze</span>
+          </label>
+
+          <label class="toggle">
+            <input type="checkbox" id="notify_tab_switch">
+            <span class="slider"></span>
+            <span class="labelText">Tab switch alerts</span>
+          </label>
+
+          <label class="toggle">
+            <input type="checkbox" id="notify_blocked_site">
+            <span class="slider"></span>
+            <span class="labelText">Blocked site alerts</span>
+          </label>
+
+          <label class="toggle">
+            <input type="checkbox" id="notify_eyes_away">
+            <span class="slider"></span>
+            <span class="labelText">Eyes away alerts</span>
+          </label>
+
+          <label class="toggle">
+            <input type="checkbox" id="notify_face_missing">
+            <span class="slider"></span>
+            <span class="labelText">Face not detected alerts</span>
+          </label>
+
+          <label class="toggle">
+            <input type="checkbox" id="notify_sound">
+            <span class="slider"></span>
+            <span class="labelText">Sound notifications</span>
+          </label>
+        </div>
+      </details>
+      <!-- FOCUS -->
+      <details class="section">
+          <summary class="sectionTitle">
+            Set Up Focus Sites
+            <svg class="chevron" viewBox="0 0 24 24">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </summary>
+
+        <div class="presets" id="focusPresets"></div>
+
+        <div style="margin-top:8px">
+          <label class="small">Custom focus domains (comma-separated)</label>
+          <input id="domains" type="text" placeholder="docs.google.com, canvas.instructure.com" />
+        </div>
+      </details>
+
+      <!-- BLOCKED -->
+      <details class="section">
+          <summary class="sectionTitle">
+            Set Up Blocked Sites
+            <svg class="chevron" viewBox="0 0 24 24">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </summary>
+
+        <div class="presets" id="blockedPresets"></div>
+
+        <div style="margin-top:8px">
+          <label class="small">Custom blocked domains (comma-separated)</label>
+          <input id="blocked" type="text" placeholder="youtube.com, netflix.com" />
+        </div>
+      </details>
+
+      <div class="row" style="margin-top:12px">
+        <button id="save" class="btn">Save</button>
+        <button id="reset" class="btn" style="background:#a2b8db">Reset</button>
+      </div>
+    </div>
+
+    <script src="options.js"></script>
+  </body>
+</html>
