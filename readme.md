@@ -1,8 +1,5 @@
 Computer vision-based focus tracking platform using MediaPipe Face Mesh, OpenCV, and customizable browser-monitoring Chrome extension and notifications to detect attention shifts during online work.
 
-[https://chromewebstore.google.com/detail/gaze/gnfdmeanclbepmgbenmdkojeemdcfmep](url)
-
-
 
 server runs at http://127.0.0.1:5000/
 
